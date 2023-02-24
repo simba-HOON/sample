@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="snd.nfc.mapper.ComplManageMapper">
+
+	
+	<!-- 가로수 컴플레인 총 갯수 -->
+	<select id="grsComplGetTotal" resultType="int">
+		select count(*) from grs_complaint
+		<if test="keyword2 != null">
+			where compl_content like concat('%', #{keyword2}, '%');
+		</if>
+	</select>
+	
+	<!-- 가로수 컴플레인 목록 조회 -->
+	<select id="grsComplGetList" resultType="snd.nfc.model.GrsComplVO">
+
+		select compl_seq, compl_grs_tag_id, compl_category, compl_content,
+		complt_name, complt_phone, complt_email, complt_noti_type,
+		complt_compl_cr_dt, complt_compl_ud_dt, compl_state, compl_mg_content,
+		compl_mg_content_cr_dt, compl_mg_content_ud_dt, compl_result_content,
+		compl_result_img, compl_result_cr_dt, compl_result_ud_dt,
+		compl_result_send_yn, compl_result_send_dt from grs_complaint
+		<if test="keyword2 !=null">
+			where compl_content like concat('%',#{keyword2}, '%')
+		</if>
+		order by compl_grs_tag_id desc
+		limit #{skip2}, #{amount2}
+	</select>
+
+	<!-- 가로수 민원 상세페이지  -->
+	<select id="grsComplGetDetail" resultType="snd.nfc.model.GrsComplVO">
+
+		select * from grs_complaint where compl_grs_tag_id=#{compl_grs_tag_id}
+
+	</select>
+
+	<!-- 가로수 민원 엑셀 다운로드 -->
+	<select id="grsComplGetExcel" resultType="snd.nfc.model.GrsComplVO">
+	
+		select * from grs_complaint
+		order by compl_grs_tag_id desc
+		
+	</select>
+	
+
+	
+	
+	
+	
+	
+	<!-- //////////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<!-- 공원 컴플레인 총 갯수 -->
+	<select id="parkComplGetTotal" resultType="int">
+		select count(*) from park_complaint
+		<if test="keyword2 != null">
+			where compl_content like concat('%', #{keyword2}, '%');
+		</if>
+	</select>
+	
+	<!-- 공원 컴플레인 목록 조회 -->
+	<select id="parkComplGetList" resultType="snd.nfc.model.ParkComplVO">
+
+		select compl_seq, compl_park_tag_id, compl_category, compl_content,
+		complt_name, complt_phone, complt_email, complt_compl_cr_dt from park_complaint
+		<if test="keyword2 !=null">
+			where compl_content like concat('%',#{keyword2}, '%')
+		</if>
+		order by compl_park_tag_id desc
+		limit #{skip2}, #{amount2}
+	</select>
+
+	<!-- 공원 민원 엑셀 다운로드 -->
+	<select id="parkComplGetExcel" resultType="snd.nfc.model.ParkComplVO">
+	
+		select * from park_complaint
+		order by compl_park_tag_id desc
+		
+	</select>
+	
+	<!-- 공원 민원 상세페이지  -->
+	<select id="parkComplGetDetail" resultType="snd.nfc.model.ParkComplVO">
+
+		select * from park_complaint where compl_park_tag_id=#{compl_park_tag_id}
+
+	</select>
+	
+	
+	
+	
+	
+
+
+
+	<!-- //////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<!-- 화장실 컴플레인 총 갯수 -->
+	<select id="toiletComplGetTotal" resultType="int">
+		select count(*) from toilet_complaint
+		<if test="keyword2 != null">
+			where compl_content like concat('%', #{keyword2}, '%');
+		</if>
+	</select>
+	
+	<!-- 화장실 컴플레인 목록 조회 -->
+	<select id="toiletComplGetList" resultType="snd.nfc.model.ToiletComplVO">
+
+		select compl_seq, compl_toilet_tag_id, compl_category, compl_content,
+		complt_name, complt_phone, complt_email, complt_compl_cr_dt from toilet_complaint
+		<if test="keyword2 !=null">
+			where compl_content like concat('%',#{keyword2}, '%')
+		</if>
+		order by compl_toilet_tag_id desc
+		limit #{skip2}, #{amount2}
+	</select>
+
+	<!-- 화장실 민원 상세 -->
+	<select id="toiletComplGetDetail" resultType="snd.nfc.model.ToiletComplVO">
+	
+		select * from toilet_complaint where compl_toilet_tag_id=#{compl_toilet_tag_id}
+	
+	</select>
+
+	<!-- 화장실 민원 엑셀 다운로드 -->
+	<select id="toiletComplGetExcel" resultType="snd.nfc.model.ToiletComplVO">
+	
+		select * from toilet_complaint
+		order by compl_toilet_tag_id desc
+		
+	</select>
+
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="snd.nfc.mapper.CompanyManageMapper">
+
+	<!-- grs Company 총 개수 -->
+	<select id="grsCompanyGetTotal" resultType="int">
+		select count(*) from grs_company
+		<if test="keyword3 !=null">
+			where company_nm like concat('%',#{keyword3},'%');
+		</if>	
+	</select>
+	
+	<!-- grs Company 목록 -->
+	<select id="grsCompanyGetList" resultType="snd.nfc.model.GrsCompanyVO">
+		select cor_reg_no, company_nm, president_nm, company_addr,
+		company_tel, company_fax, company_busi, company_id, design_yn, construction_yn,
+		supervision_yn, sys_cr_user_id, sys_ud_user_id, sys_cr_dt, sys_ud_dt
+		from grs_company
+		<if test="keyword3 != null">
+			where company_nm like concat('%',#{keyword3},'%')
+		</if>
+		order by cor_reg_no desc
+		limit #{skip3}, #{amount3}
+	</select>
+	
+	<!-- grs 업체 엑셀 다운로드 -->
+	<select id="grsCompanyGetExcel" resultType="snd.nfc.model.GrsCompanyVO">
+	
+		select * from grs_company
+		order by cor_reg_no desc
+		
+	</select>
+	
+	<!-- 가로수 업체 상세페이지 -->
+	<select id="grsCompanyGetDetail" resultType="snd.nfc.model.GrsCompanyVO">
+
+		select * from grs_company where cor_reg_no=#{cor_reg_no}
+
+	</select>
+	
+	
+	
+	<!-- ////////////////////////////////////////////////////////////////////////// -->
+	
+	<!-- park Company 총 개수 -->
+	<select id="parkCompanyGetTotal" resultType="int">
+		select count(*) from park_company
+		<if test="keyword3 !=null">
+			where company_nm like concat('%',#{keyword3},'%');
+		</if>	
+	</select>
+	
+	<!-- park Company 목록 -->
+	<select id="parkCompanyGetList" resultType="snd.nfc.model.ParkCompanyVO">
+		select cor_reg_no, company_nm, president_nm, company_addr,
+		company_tel, company_fax, company_busi, company_id, design_yn, construction_yn,
+		supervision_yn, sys_cr_user_id, sys_ud_user_id, sys_cr_dt, sys_ud_dt
+		from park_company
+		<if test="keyword3 != null">
+			where company_nm like concat('%',#{keyword3},'%')
+		</if>
+		order by cor_reg_no desc
+		limit #{skip3}, #{amount3}
+	</select>
+	
+	<!-- park 업체 상세 -->
+	<select id="parkCompanyGetDetail" resultType="snd.nfc.model.ParkCompanyVO">
+	
+		select * from park_company where cor_reg_no=#{cor_reg_no}
+	
+	</select>
+	
+	<!-- park 업체 엑셀 다운로드 -->
+	<select id="parkCompanyGetExcel" resultType="snd.nfc.model.ParkCompanyVO">
+	
+		select * from park_company
+		order by cor_reg_no desc
+		
+	</select>	
+	
+	
+	
+	
+	
+	
+	<!-- ////////////////////////////////////////////////////////////////////////////// -->
+	
+	<!-- toeilt Company 총 개수 -->
+	<select id="toiletCompanyGetTotal" resultType="int">
+		select count(*) from toilet_company
+		<if test="keyword3 !=null">
+			where company_nm like concat('%',#{keyword3},'%');
+		</if>	
+	</select>
+	
+	<!-- Company 목록 -->
+	<select id="toiletCompanyGetList" resultType="snd.nfc.model.ToiletCompanyVO">
+		select cor_reg_no, company_nm, president_nm, company_addr,
+		company_tel, company_fax, company_busi, company_id, design_yn, construction_yn,
+		supervision_yn, sys_cr_user_id, sys_ud_user_id, sys_cr_dt, sys_ud_dt
+		from toilet_company
+		<if test="keyword3 != null">
+			where company_nm like concat('%',#{keyword3},'%')
+		</if>
+		order by cor_reg_no desc
+		limit #{skip3}, #{amount3}
+	</select>
+	
+	<!-- 업체 상세 -->
+	<select id="toiletCompanyGetDetail" resultType="snd.nfc.model.ToiletCompanyVO">
+	
+		select * from toilet_company where cor_reg_no=#{cor_reg_no}
+	
+	</select>
+	
+	<!-- 업체 엑셀 다운로드 -->
+	<select id="toiletCompanyGetExcel" resultType="snd.nfc.model.ToiletCompanyVO">
+	
+		select * from toilet_company
+		order by cor_reg_no desc
+		
+	</select>	
+	
+</mapper>

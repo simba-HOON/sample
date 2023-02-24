@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JoinMapper 및 sql문 -->
+<mapper namespace="snd.nfc.mapper.MemberMapper">
+	<!-- 관리자 등록문 -->
+	<insert id="memberJoin">
+		insert into grs_sys_mng values (#{mng_seq},
+		#{mng_name}, #{mng_password},
+		#{mng_phone}, #{mng_grade},
+		#{mng_comment}, #{mng_uuid}, #{mng_token},
+		now(), now(), 1, 1)
+	</insert>
+
+	<!-- 로그인 -->
+	<select id="memberLogin" resultType="snd.nfc.model.MngVO">
+
+		select mng_name,
+		mng_password, mng_phone, mng_grade, mng_comment, mng_cr_dt from
+		grs_sys_mng where mng_name = #{mng_name}
+
+	</select>
+</mapper>

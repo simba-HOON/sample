@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- MariaDB JDBC DataSource -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<!-- <property name="driverClassName" value="org.mariadb.jdbc.Driver" /> -->
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+		<property name="url" value="jdbc:mariadb://snd.synology.me:8302/garosoomanagement" />
+		<property name="username" value="root" />
+		<property name="password" value="Snd0500++" />
+	</bean>
+	
+	<!-- mybatis SqlSessionFactoryBean -->
+	<!-- Mybatis와 dataSource에서 가져온 DB를 mapper와 연결해주는 부분 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 이부분의 path는 src/main/resources의 xml파일이며 경로가 /이 된다 -->
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
+       	<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" />
+	</bean>	
+	
+	<!-- myBatis sql session template -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<!-- scans and transactions -->
+	<mybatis-spring:scan base-package="snd.nfc.mapper" factory-ref="sqlSessionFactory"  />
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+  		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- ~~~~~~~~~~~~~~~~~~~~~ 
+	<bean id="dataSourceForTest" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+		<property name="url" value="jdbc:mariadb://snd.synology.me:8302/TEST_HC" />
+		<property name="username" value="root" />
+		<property name="password" value="Snd0500++" />
+	</bean>
+	
+	<bean id="sqlSessionFactoryForTest" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSourceForTest" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
+       	<property name="mapperLocations" value="classpath:/mappersForTest/**/*.xml" />
+	</bean>	
+	
+	<bean id="sqlSessionTemplateForTest" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryForTest" />
+	</bean>
+	
+	 scans and transactions 
+	<mybatis-spring:scan base-package="snd.nfc.mapperTest" factory-ref="sqlSessionFactoryForTest"  />
+	
+	
+	<bean id="transactionManagerForTest" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+  		<property name="dataSource" ref="dataSourceForTest" />
+	</bean>
+	
+	 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+	<!-- <mybatis-spring:scan base-package="snd.nfc.mapper"/> -->
+	<context:component-scan base-package="snd.nfc.model"></context:component-scan>
+	<context:component-scan base-package="snd.nfc.service"></context:component-scan>	
+</beans>
